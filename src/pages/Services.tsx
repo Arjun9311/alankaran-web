@@ -123,17 +123,17 @@ export default function Services() {
         {/* Inline CTA strip */}
         <div className="mt-16 bg-foreground rounded-xl px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="font-serif text-white text-xl">Receive a Tailored Proposal</p>
-            <p className="font-sans text-white/60 text-xs font-light mt-1">Tell us your vision and we'll send you a detailed event costing within 24 hours.</p>
+            <p className="font-serif text-background text-xl">Receive a Tailored Proposal</p>
+            <p className="font-sans text-background/60 text-xs font-light mt-1">Tell us your vision and we'll send you a detailed event costing within 24 hours.</p>
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">
             <Link href="/contact">
-              <motion.button className="px-6 py-3 bg-gold text-white section-label hover:bg-gold/90 transition-all" whileHover={{ scale: 1.03 }}>
+              <motion.button className="px-6 py-3 bg-gold text-primary-foreground section-label hover:bg-gold-hover hover:gold-glow transition-all" whileHover={{ scale: 1.03 }}>
                 Request Event Costing
               </motion.button>
             </Link>
             <Link href="/contact">
-              <motion.button className="px-6 py-3 border border-white/30 text-white section-label hover:bg-white/10 transition-all" whileHover={{ scale: 1.03 }}>
+              <motion.button className="px-6 py-3 border border-background/30 text-background section-label hover:bg-background/10 transition-all" whileHover={{ scale: 1.03 }}>
                 Talk to an Expert
               </motion.button>
             </Link>

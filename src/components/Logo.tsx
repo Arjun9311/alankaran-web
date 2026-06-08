@@ -4,7 +4,7 @@ interface LogoProps {
   textColor?: string;
 }
 
-export default function Logo({ size = 52, showText = true, textColor = "hsl(20,12%,15%)" }: LogoProps) {
+export default function Logo({ size = 52, showText = true, textColor = "hsl(var(--foreground))" }: LogoProps) {
   const gold = "hsl(36,36%,52%)";
   const goldLight = "hsl(36,36%,61%)";
 

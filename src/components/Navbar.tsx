@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles, Crown } from "lucide-react";
 import { useBooking } from "@/context/BookingContext";
 import Logo from "@/components/Logo";
 
@@ -19,7 +19,37 @@ const navLinks = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [location] = useLocation();
+  const [theme, setTheme] = useState<"classic" | "luxury">(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("alankaran-theme");
+      if (saved === "luxury") return "luxury";
+    }
+    return "classic";
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "luxury") {
+      root.setAttribute("data-theme", "luxury");
+      localStorage.setItem("alankaran-theme", "luxury");
+    } else {
+      root.removeAttribute("data-theme");
+      localStorage.setItem("alankaran-theme", "classic");
+    }
+  }, [theme]);
   const { openBookingModal } = useBooking();
+  const [ripples, setRipples] = useState<{ id: number; x: number; y: number; link: string }[]>([]);
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLElement>, href: string) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const id = Date.now() + Math.random();
+    setRipples((prev) => [...prev, { id, x, y, link: href }]);
+    setTimeout(() => {
+      setRipples((prev) => prev.filter((r) => r.id !== id));
+    }, 400);
+  };
 
   useEffect(() => {
     setMenuOpen(false);
@@ -51,25 +81,102 @@ export default function Navbar() {
 
           {/* Desktop Nav - Right aligned */}
           <div className="hidden lg:flex items-center justify-end gap-3.5 xl:gap-5 whitespace-nowrap ml-auto">
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href}>
-                <motion.span
-                  className={`group relative cursor-pointer transition-colors duration-300 pb-1 text-[9px] xl:text-[9.5px] tracking-[0.06em] xl:tracking-[0.1em] uppercase font-semibold ${location === link.href
-                      ? "text-gold font-bold"
-                      : "text-foreground/75 hover:text-foreground"
-                    }`}
-                  whileHover={{ y: -0.5 }}
-                  data-testid={`nav-link-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
-                >
-                  {link.label}
-                  <span className={`absolute bottom-0 left-0 w-full h-[1px] bg-gold origin-left transition-transform duration-300 ${location === link.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`} />
-                </motion.span>
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = location === link.href;
+              return (
+                <Link key={link.href} href={link.href}>
+                  <motion.span
+                    onClick={(e) => handleLinkClick(e, link.href)}
+                    className="group relative cursor-pointer pb-2 pt-1 px-2.5 text-[9px] xl:text-[9.5px] tracking-[0.06em] xl:tracking-[0.1em] uppercase font-semibold block overflow-hidden rounded-md"
+                    animate={{
+                      scale: isActive ? 1.05 : 1,
+                      color: isActive ? "var(--color-primary)" : "hsl(var(--foreground) / 0.75)"
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 30,
+                      duration: 0.3
+                    }}
+                    whileHover={{ y: -0.5 }}
+                    data-testid={`nav-link-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
+                  >
+                    {link.label}
+                    {/* Sliding liquid underline ribbon */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="tab-indicator"
+                        className="absolute bottom-0 left-0 w-full h-[2px] bg-gold"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    
+                    {/* Subtle gold dust particles burst on hover */}
+                    <span className="absolute inset-0 pointer-events-none overflow-visible opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <span className="absolute left-[20%] bottom-1 w-[2px] h-[2px] rounded-full bg-gold/85 animate-particle-1" />
+                      <span className="absolute left-[40%] bottom-1 w-[2px] h-[2px] rounded-full bg-gold/85 animate-particle-2" />
+                      <span className="absolute left-[60%] bottom-1 w-[2px] h-[2px] rounded-full bg-gold/85 animate-particle-3" />
+                      <span className="absolute left-[80%] bottom-1 w-[2px] h-[2px] rounded-full bg-gold/85 animate-particle-4" />
+                    </span>
 
-            {/* Book button */}
+                    {/* Post-click Gold Ripple effect */}
+                    {ripples.filter(r => r.link === link.href).map((ripple) => (
+                      <span
+                        key={ripple.id}
+                        className="absolute bg-gold rounded-full pointer-events-none animate-gold-ripple"
+                        style={{
+                          left: ripple.x,
+                          top: ripple.y,
+                          width: "20px",
+                          height: "20px",
+                          transform: "translate(-50%, -50%)",
+                        }}
+                      />
+                    ))}
+                  </motion.span>
+                </Link>
+              );
+            })}
+
+            {/* Theme Toggle Button */}
             <motion.button
-              onClick={openBookingModal}
+              onClick={() => setTheme(theme === "classic" ? "luxury" : "classic")}
+              className="relative p-2 ml-1 rounded-full border border-gold/30 hover:border-gold/60 text-gold bg-transparent transition-all flex items-center justify-center min-w-[34px] min-h-[34px]"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title={theme === "classic" ? "Switch to Royal Luxury" : "Switch to Classic Ivory"}
+              data-testid="btn-theme-toggle"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {theme === "classic" ? (
+                  <motion.div
+                    key="classic"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center justify-center"
+                  >
+                    <Sparkles className="w-4 h-4 text-gold" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="luxury"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center justify-center"
+                  >
+                    <Crown className="w-4 h-4 text-gold" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+
+             {/* Book button */}
+            <motion.button
+              onClick={() => openBookingModal()}
               className="ml-2 px-4.5 py-1.5 bg-gold text-background text-[9px] xl:text-[9.5px] tracking-[0.1em] uppercase font-bold rounded-full hover:bg-[#9B7744] transition-all border border-gold/20 shadow-sm"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -109,24 +216,93 @@ export default function Navbar() {
               <div className="mb-4">
                 <Logo size={48} showText={true} />
               </div>
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: 0.05 * i + 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              {navLinks.map((link, i) => {
+                const isActive = location === link.href;
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ delay: 0.05 * i + 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Link href={link.href}>
+                      <motion.span
+                        onClick={(e) => handleLinkClick(e, link.href)}
+                        className="font-serif text-3xl cursor-pointer block relative overflow-hidden px-6 py-2 rounded-lg"
+                        animate={{
+                          scale: isActive ? 1.05 : 1,
+                          color: isActive ? "var(--color-primary)" : "hsl(var(--foreground) / 0.9)"
+                        }}
+                        transition={{ duration: 0.3 }}
+                        data-testid={`mobile-nav-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
+                      >
+                        {link.label}
+
+                        {/* Sliding liquid underline ribbon for active mobile item */}
+                        {isActive && (
+                          <motion.span
+                            layoutId="mobile-tab-indicator"
+                            className="absolute bottom-0 left-6 right-6 h-[2px] bg-gold"
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+
+                        {/* Subtle gold dust particles burst on hover */}
+                        <span className="absolute inset-0 pointer-events-none overflow-visible opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity duration-200">
+                          <span className="absolute left-[20%] bottom-1 w-[2px] h-[2px] rounded-full bg-gold/85 animate-particle-1" />
+                          <span className="absolute left-[40%] bottom-1 w-[2px] h-[2px] rounded-full bg-gold/85 animate-particle-2" />
+                          <span className="absolute left-[60%] bottom-1 w-[2px] h-[2px] rounded-full bg-gold/85 animate-particle-3" />
+                          <span className="absolute left-[80%] bottom-1 w-[2px] h-[2px] rounded-full bg-gold/85 animate-particle-4" />
+                        </span>
+
+                        {/* Post-click Gold Ripple effect */}
+                        {ripples.filter(r => r.link === link.href).map((ripple) => (
+                          <span
+                            key={ripple.id}
+                            className="absolute bg-gold rounded-full pointer-events-none animate-gold-ripple"
+                            style={{
+                              left: ripple.x,
+                              top: ripple.y,
+                              width: "20px",
+                              height: "20px",
+                              transform: "translate(-50%, -50%)",
+                            }}
+                          />
+                        ))}
+                      </motion.span>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+
+              {/* Mobile Theme Switcher */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.52, duration: 0.5 }}
+                className="w-full flex justify-center mb-2"
+              >
+                <button
+                  onClick={() => setTheme(theme === "classic" ? "luxury" : "classic")}
+                  className="px-6 py-2.5 rounded-full border border-gold/30 hover:border-gold/60 text-gold flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-widest bg-transparent transition-all"
+                  data-testid="mobile-btn-theme"
                 >
-                  <Link href={link.href}>
-                    <span
-                      className="font-serif text-3xl text-foreground/90 hover:text-gold transition-colors cursor-pointer"
-                      data-testid={`mobile-nav-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
-                    >
-                      {link.label}
-                    </span>
-                  </Link>
-                </motion.div>
-              ))}
+                  {theme === "classic" ? (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 text-gold" />
+                      <span>Classic Ivory</span>
+                    </>
+                  ) : (
+                    <>
+                      <Crown className="w-3.5 h-3.5 text-gold" />
+                      <span>Royal Luxury</span>
+                    </>
+                  )}
+                </button>
+              </motion.div>
+
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -136,7 +312,7 @@ export default function Navbar() {
                 <div className="flex flex-col gap-4 mt-4">
                   <Link href="/contact">
                     <button
-                      className="w-full px-8 py-3.5 border border-gold text-gold section-label rounded-full hover:bg-[#9B7744] hover:text-background transition-all"
+                      className="w-full px-8 py-3.5 border border-gold text-gold section-label rounded-full hover:bg-gold hover:text-nizami-dark transition-all"
                       data-testid="mobile-btn-consultation"
                     >
                       Book Consultation

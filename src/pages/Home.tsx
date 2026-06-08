@@ -89,6 +89,17 @@ const videos = [
 
 export default function Home() {
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
+  const [pulseHighlight, setPulseHighlight] = useState(false);
+
+  useEffect(() => {
+    const handleHighlight = () => {
+      setPulseHighlight(true);
+      const timer = setTimeout(() => setPulseHighlight(false), 3000);
+      return () => clearTimeout(timer);
+    };
+    window.addEventListener("highlight-royal-themes", handleHighlight);
+    return () => window.removeEventListener("highlight-royal-themes", handleHighlight);
+  }, []);
 
   const landingSlides = [
     {
@@ -477,11 +488,11 @@ export default function Home() {
       </section>
 
       {/* ─── INLINE CTA STRIP ─── */}
-      <div className="bg-foreground py-5">
-        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="max-w-screen-xl mx-auto px-6 lg:px-12 mt-16">
+        <div className="bg-foreground rounded-xl px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="font-serif text-white text-lg">Ready to begin your wedding journey?</p>
-            <p className="font-sans text-white/60 text-xs font-light mt-0.5">Talk to our expert and get a personalised quote today.</p>
+            <p className="font-serif text-background text-lg">Ready to begin your wedding journey?</p>
+            <p className="font-sans text-background/60 text-xs font-light mt-0.5">Talk to our expert and get a personalised quote today.</p>
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">
             <Link href="/contact">
@@ -490,7 +501,7 @@ export default function Home() {
               </motion.button>
             </Link>
             <Link href="/contact">
-              <motion.button className="px-6 py-3 border border-white/30 text-white section-label hover:bg-white/10 transition-all" whileHover={{ scale: 1.03 }}>
+              <motion.button className="px-6 py-3 border border-background/30 text-background section-label hover:bg-background/10 transition-all" whileHover={{ scale: 1.03 }}>
                 Get a Quote
               </motion.button>
             </Link>
@@ -499,7 +510,7 @@ export default function Home() {
       </div>
 
       {/* ─── ROYAL THEMES ─── */}
-      <section className="py-24 lg:py-32">
+      <section id="royal-themes" className={`py-24 lg:py-32 transition-all duration-500 ${pulseHighlight ? "royal-theme-pulse" : ""}`}>
         <div className="max-w-screen-xl mx-auto px-6 lg:px-12">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-6">
             <div>

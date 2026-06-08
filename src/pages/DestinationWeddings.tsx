@@ -225,7 +225,7 @@ export default function DestinationWeddings() {
                   <h3 className="font-serif text-xl text-foreground mb-1">Quick Match</h3>
                   <p className="text-muted-foreground text-xs font-sans font-light">Find a destination style that fits your guest count and vibe.</p>
                 </div>
-                <span className="px-3 py-1 bg-foreground text-white rounded-full text-xs font-sans">2 min</span>
+                <span className="px-3 py-1 bg-foreground text-background rounded-full text-xs font-sans">2 min</span>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
@@ -527,7 +527,7 @@ export default function DestinationWeddings() {
                         <Users size={10} /> {w.guests}
                       </p>
                     </div>
-                    <span className="px-3 py-1 bg-foreground text-white text-xs font-sans rounded-full">Case</span>
+                    <span className="px-3 py-1 bg-foreground text-background text-xs font-sans rounded-full">Case</span>
                   </div>
                   <div className="bg-stone-50 rounded-lg p-3 border border-stone-100 mb-4">
                     <p className="text-xs font-sans text-muted-foreground mb-0.5">Budget bracket</p>
@@ -606,6 +606,7 @@ export default function DestinationWeddings() {
                 <div>
                   <label className="block text-xs font-sans font-medium text-foreground mb-2 uppercase tracking-wider">Full Name</label>
                   <input
+                    id="destination-name-input"
                     type="text"
                     placeholder="Enter your full name"
                     className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm font-sans text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-gold/60 transition-colors"

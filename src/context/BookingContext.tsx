@@ -1,8 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import BookingModal from "@/components/BookingModal";
 
+interface BookingOptions {
+  eventType?: string;
+  message?: string;
+}
+
 interface BookingContextType {
-  openBookingModal: () => void;
+  openBookingModal: (options?: BookingOptions) => void;
   closeBookingModal: () => void;
 }
 
@@ -10,14 +15,21 @@ const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
 export function BookingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [options, setOptions] = useState<BookingOptions | undefined>(undefined);
 
-  const openBookingModal = () => setIsOpen(true);
-  const closeBookingModal = () => setIsOpen(false);
+  const openBookingModal = (opts?: BookingOptions) => {
+    setOptions(opts);
+    setIsOpen(true);
+  };
+  const closeBookingModal = () => {
+    setIsOpen(false);
+    setOptions(undefined);
+  };
 
   return (
     <BookingContext.Provider value={{ openBookingModal, closeBookingModal }}>
       {children}
-      <BookingModal isOpen={isOpen} onClose={closeBookingModal} />
+      <BookingModal isOpen={isOpen} onClose={closeBookingModal} options={options} />
     </BookingContext.Provider>
   );
 }

@@ -10,6 +10,8 @@ import LenisProvider from "@/components/LenisProvider";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { BookingProvider } from "@/context/BookingContext";
 import NotFound from "@/pages/not-found";
+import PageTransition from "@/components/PageTransition";
+import FloatingCTA from "@/components/FloatingCTA";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -51,35 +53,49 @@ function PageLoader() {
 }
 
 function Router() {
+  const [location] = useLocation();
+
   return (
     <AnimatePresence mode="wait">
-      <Switch>
-        <Route path="/" component={() => (
-          <Suspense fallback={<PageLoader />}><Home /></Suspense>
-        )} />
-        <Route path="/about" component={() => (
-          <Suspense fallback={<PageLoader />}><About /></Suspense>
-        )} />
-        <Route path="/services" component={() => (
-          <Suspense fallback={<PageLoader />}><Services /></Suspense>
-        )} />
-        <Route path="/destinations" component={() => (
-          <Suspense fallback={<PageLoader />}><DestinationWeddings /></Suspense>
-        )} />
-        <Route path="/wedding-stories" component={() => (
-          <Suspense fallback={<PageLoader />}><WeddingStories /></Suspense>
-        )} />
-        <Route path="/gallery" component={() => (
-          <Suspense fallback={<PageLoader />}><Gallery /></Suspense>
-        )} />
-        <Route path="/testimonials" component={() => (
-          <Suspense fallback={<PageLoader />}><Testimonials /></Suspense>
-        )} />
-        <Route path="/contact" component={() => (
-          <Suspense fallback={<PageLoader />}><Contact /></Suspense>
-        )} />
-        <Route component={NotFound} />
-      </Switch>
+      <PageTransition key={location}>
+        <Switch location={location}>
+          <Route path="/" component={() => (
+            <Suspense fallback={<PageLoader />}><Home /></Suspense>
+          )} />
+          <Route path="/about" component={() => (
+            <Suspense fallback={<PageLoader />}><About /></Suspense>
+          )} />
+          <Route path="/services" component={() => (
+            <Suspense fallback={<PageLoader />}><Services /></Suspense>
+          )} />
+          <Route path="/destinations" component={() => (
+            <Suspense fallback={<PageLoader />}><DestinationWeddings /></Suspense>
+          )} />
+          <Route path="/wedding-stories" component={() => (
+            <Suspense fallback={<PageLoader />}><WeddingStories /></Suspense>
+          )} />
+          <Route path="/gallery" component={() => (
+            <Suspense fallback={<PageLoader />}><Gallery /></Suspense>
+          )} />
+          <Route path="/testimonials" component={() => (
+            <Suspense fallback={<PageLoader />}><Testimonials /></Suspense>
+          )} />
+          <Route path="/contact" component={() => (
+            <Suspense fallback={<PageLoader />}><Contact /></Suspense>
+          )} />
+          <Route path="/themes" component={() => {
+            const [, setLoc] = useLocation();
+            useEffect(() => { setLoc("/#royal-themes"); }, [setLoc]);
+            return <PageLoader />;
+          }} />
+          <Route path="/wedding-themes" component={() => {
+            const [, setLoc] = useLocation();
+            useEffect(() => { setLoc("/#royal-themes"); }, [setLoc]);
+            return <PageLoader />;
+          }} />
+          <Route component={NotFound} />
+        </Switch>
+      </PageTransition>
     </AnimatePresence>
   );
 }
@@ -120,6 +136,7 @@ function App() {
                 <ScrollToTop />
                 <Navbar />
                 <Router />
+                <FloatingCTA />
                 {showWhatsApp && <WhatsAppButton />}
               </WouterRouter>
             </BookingProvider>

@@ -130,23 +130,30 @@ export default function About() {
           </div>
         </section>
 
-        {/* Founder */}
+        {/* Founders & Leadership */}
         <section className="py-16 mb-24 border-t border-gold/10 pt-24">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="aspect-[3/4] glass-card p-2">
-              <div className="w-full h-full" style={{ backgroundImage: `url(${images[4]})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+            <div className="aspect-[3/4] overflow-hidden glass-card p-2 gsap-reveal">
+              <img 
+                src="/images/founders.webp" 
+                alt="Chaitanya & Chandrika Kulkarni" 
+                className="w-full h-full object-cover" 
+                loading="lazy"
+              />
             </div>
             <div className="lg:col-span-2 flex flex-col justify-center">
-              <p className="section-label mb-4 gsap-reveal text-gold">Creative Director</p>
-              <h2 className="text-display text-4xl lg:text-5xl mb-6 gsap-reveal text-foreground">Priya Sharma</h2>
-              <p className="text-body text-sm mb-6 gsap-reveal">
-                With over fifteen years devoted to the art of celebration, Priya Sharma founded Alankaran with a singular conviction: that a wedding should be indistinguishable from great art. Trained in art direction and with roots in classical Indian design, she brings an editorial precision and emotional depth to every project.
+              <p className="section-label mb-4 gsap-reveal text-gold">Founders & Directors</p>
+              <h2 className="text-display text-4xl lg:text-5xl mb-6 gsap-reveal text-foreground">
+                Chaitanya & Chandrika Kulkarni
+              </h2>
+              <p className="text-body text-sm mb-6 gsap-reveal leading-relaxed">
+                Founded at the intersection of business strategy and editorial beauty, Alankaran is led by Chaitanya Kulkarni and Chandrika Kulkarni. Chaitanya, a post-graduate in Marketing with a PG Diploma in Event Management, brings extensive operational expertise and logistical foresight. Having started his career in marketing, he commands the business strategy and client relations that make Alankaran's largest celebrations seamless and precise.
               </p>
-              <p className="text-body text-sm mb-8 gsap-reveal">
-                Her work has been featured in Vogue India, Harper's Bazaar Bride, and Architectural Digest. She has designed weddings across Udaipur, Jaipur, Mumbai, Goa, and destinations including London, Dubai, and the Maldives.
+              <p className="text-body text-sm mb-8 gsap-reveal leading-relaxed">
+                Chandrika, a post-graduate with natural artistic sensibilities and style, serves as the creative force of the studio. A keen observer with a meticulous eye for detail, she excels in auditing event execution and finance, playing a pivotal role in managing people, logistics, and budgets to bring Alankaran's editorial designs to life.
               </p>
               <div className="h-px mb-6 bg-gold/20" />
-              <p className="text-quote text-lg text-gold/80 gsap-reveal">
+              <p className="text-quote text-xl lg:text-2xl text-gold font-semibold gsap-reveal">
                 &ldquo;Every couple deserves a wedding that feels like the most beautiful version of themselves.&rdquo;
               </p>
             </div>

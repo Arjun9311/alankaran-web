@@ -70,7 +70,7 @@ export default function WhatsAppButton() {
 
         {/* Primary Booking Action (Metallic Gold Pill) */}
         <motion.button
-          onClick={openBookingModal}
+          onClick={() => openBookingModal()}
           className="flex items-center gap-2 px-5.5 py-2.5 bg-gold text-nizami-dark font-sans font-extrabold text-[10px] tracking-[0.2em] rounded-full gold-glow shadow-md hover:scale-105 active:scale-95 uppercase transition-all duration-300 border border-gold/25"
           whileTap={{ scale: 0.96 }}
         >

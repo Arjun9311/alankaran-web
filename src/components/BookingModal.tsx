@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, CheckSquare, Users, Mail, Phone, User, MessageSquare } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -7,6 +7,10 @@ import { useToast } from "@/hooks/use-toast";
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  options?: {
+    eventType?: string;
+    message?: string;
+  };
 }
 
 const eventTypes = ["Wedding", "Engagement", "Corporate", "Social Event", "Other"];
@@ -14,7 +18,7 @@ const eventTypes = ["Wedding", "Engagement", "Corporate", "Social Event", "Other
 const inputBase =
   "w-full bg-transparent border-b border-gold/40 font-sans font-light text-sm placeholder-transparent focus:outline-none focus:border-gold transition-colors duration-300 py-3 text-foreground";
 
-export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
+export default function BookingModal({ isOpen, onClose, options }: BookingModalProps) {
   const { toast } = useToast();
   const [form, setForm] = useState({
     name: "",
@@ -25,6 +29,20 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     guests: "",
     message: "",
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        eventType: options?.eventType || "",
+        date: "",
+        guests: "",
+        message: options?.message || "",
+      });
+    }
+  }, [isOpen, options]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,8 +72,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl bg-background border border-border/40 p-0 overflow-hidden shadow-xl rounded-2xl">
-        <div className="relative grid grid-cols-1 md:grid-cols-5 min-h-[600px]">
+      <DialogContent className="theme-classic w-[92vw] sm:w-full max-w-2xl bg-background text-foreground border border-border/40 p-0 overflow-hidden shadow-xl rounded-2xl">
+        <div className="relative grid grid-cols-1 md:grid-cols-5 min-h-0 md:min-h-[600px]">
           {/* Left Side - Decorative */}
           <div className="hidden md:flex md:col-span-2 relative flex-col justify-center px-8 text-center border-r border-border/20 bg-nizami-maroon">
             <div className="z-10">
@@ -69,7 +87,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           </div>
 
           {/* Right Side - Form */}
-          <div className="md:col-span-3 p-8 md:p-10 bg-card-bg overflow-y-auto max-h-[90vh]">
+          <div className="md:col-span-3 p-6 md:p-10 bg-card-bg overflow-y-auto max-h-[85vh] md:max-h-[90vh]">
             <DialogHeader className="mb-8">
               <DialogTitle className="font-serif text-2xl text-foreground text-left">Event Details</DialogTitle>
               <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-gold mt-2">Begin Your Journey</p>

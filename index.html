@@ -19,6 +19,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <script>
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem('alankaran-theme');
+          if (savedTheme === 'luxury') {
+            document.documentElement.setAttribute('data-theme', 'luxury');
+          } else {
+            document.documentElement.removeAttribute('data-theme');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!--
       Non-blocking font load strategy:
       1. Preload as style (highest priority resource hint)
@@ -29,18 +42,18 @@
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=Great+Vibes&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=Great+Vibes&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=Great+Vibes&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=Great+Vibes&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" />
     </noscript>
 
     <!--
       LCP Critical Resource Hints
       hero-couple.webp is the Largest Contentful Paint element.
       - imagesrcset provides correct responsive sizes so the browser
-        fetches only the size it needs, not the full 1027KB PNG.
+      - fetches only the size it needs, not the full 1027KB PNG.
       - fetchpriority="high" boosts it above other preloads.
     -->
     <link
@@ -62,14 +75,19 @@
     <style>
       /* Critical: prevent FOUC (Flash Of Unstyled Content) */
       html { background: #F8F5F0; color: #2A2421; }
+      html[data-theme="luxury"] { background: #080808; color: #F8F5EF; }
       body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: #F8F5F0; }
+      html[data-theme="luxury"] body { background: #080808; }
       /* Above-fold hero skeleton — visible before React hydrates */
       #root { min-height: 100svh; }
       /* font-display:swap fallback stacks — text always visible */
       .font-serif  { font-family: 'Cormorant Garamond', Georgia, serif; }
+      html[data-theme="luxury"] .font-serif { font-family: 'Playfair Display', Georgia, serif; }
       .font-script { font-family: 'Great Vibes', cursive; }
+      html[data-theme="luxury"] .font-script { font-family: 'Pinyon Script', cursive; }
       /* Gold accent so hero tagline renders instantly */
       .text-gold   { color: #B08D57; }
+      html[data-theme="luxury"] .text-gold { color: #D4AF37; }
     </style>
   </head>
   <body>

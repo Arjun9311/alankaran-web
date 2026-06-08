@@ -130,31 +130,6 @@ export default function WeddingStories() {
           </article>
         ))}
 
-        {/* CTA */}
-        <section className="py-24 text-center">
-          <p className="section-label mb-4 text-gold justify-center">Your Story Awaits</p>
-          <h2 className="text-display text-4xl lg:text-5xl mb-4 text-foreground">Ready to write your chapter?</h2>
-          <p className="font-sans text-sm text-muted-foreground font-light mb-8 max-w-md mx-auto">Let us craft your dream wedding — every detail, every moment, perfectly composed.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact">
-              <motion.button
-                className="px-10 py-4 bg-gold text-background section-label hover:bg-gold/90 hover:gold-glow transition-all"
-                whileHover={{ scale: 1.03 }}
-                data-testid="btn-stories-contact"
-              >
-                Begin Your Wedding Story
-              </motion.button>
-            </Link>
-            <Link href="/contact">
-              <motion.button
-                className="px-10 py-4 btn-outline-gold section-label transition-all"
-                whileHover={{ scale: 1.03 }}
-              >
-                Let's Create Your Forever Moment
-              </motion.button>
-            </Link>
-          </div>
-        </section>
       </div>
 
       <Footer />
