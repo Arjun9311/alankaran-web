@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles, Crown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useBooking } from "@/context/BookingContext";
 import Logo from "@/components/Logo";
 
@@ -19,24 +19,13 @@ const navLinks = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [location] = useLocation();
-  const [theme, setTheme] = useState<"classic" | "luxury">(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("alankaran-theme");
-      if (saved === "luxury") return "luxury";
-    }
-    return "classic";
-  });
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === "luxury") {
-      root.setAttribute("data-theme", "luxury");
-      localStorage.setItem("alankaran-theme", "luxury");
-    } else {
-      root.removeAttribute("data-theme");
-      localStorage.setItem("alankaran-theme", "classic");
-    }
-  }, [theme]);
+    root.removeAttribute("data-theme");
+    localStorage.removeItem("alankaran-theme");
+  }, []);
+
   const { openBookingModal } = useBooking();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number; link: string }[]>([]);
 
@@ -137,42 +126,6 @@ export default function Navbar() {
                 </Link>
               );
             })}
-
-            {/* Theme Toggle Button */}
-            <motion.button
-              onClick={() => setTheme(theme === "classic" ? "luxury" : "classic")}
-              className="relative p-2 ml-1 rounded-full border border-gold/30 hover:border-gold/60 text-gold bg-transparent transition-all flex items-center justify-center min-w-[34px] min-h-[34px]"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              title={theme === "classic" ? "Switch to Royal Luxury" : "Switch to Classic Ivory"}
-              data-testid="btn-theme-toggle"
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {theme === "classic" ? (
-                  <motion.div
-                    key="classic"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-center justify-center"
-                  >
-                    <Sparkles className="w-4 h-4 text-gold" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="luxury"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-center justify-center"
-                  >
-                    <Crown className="w-4 h-4 text-gold" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
 
              {/* Book button */}
             <motion.button
@@ -276,32 +229,7 @@ export default function Navbar() {
                 );
               })}
 
-              {/* Mobile Theme Switcher */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.52, duration: 0.5 }}
-                className="w-full flex justify-center mb-2"
-              >
-                <button
-                  onClick={() => setTheme(theme === "classic" ? "luxury" : "classic")}
-                  className="px-6 py-2.5 rounded-full border border-gold/30 hover:border-gold/60 text-gold flex items-center gap-2.5 text-[10px] font-semibold uppercase tracking-widest bg-transparent transition-all"
-                  data-testid="mobile-btn-theme"
-                >
-                  {theme === "classic" ? (
-                    <>
-                      <Sparkles className="w-3.5 h-3.5 text-gold" />
-                      <span>Classic Ivory</span>
-                    </>
-                  ) : (
-                    <>
-                      <Crown className="w-3.5 h-3.5 text-gold" />
-                      <span>Royal Luxury</span>
-                    </>
-                  )}
-                </button>
-              </motion.div>
+
 
               <motion.div
                 initial={{ opacity: 0, y: 30 }}

@@ -22,12 +22,8 @@
     <script>
       (function() {
         try {
-          var savedTheme = localStorage.getItem('alankaran-theme');
-          if (savedTheme === 'luxury') {
-            document.documentElement.setAttribute('data-theme', 'luxury');
-          } else {
-            document.documentElement.removeAttribute('data-theme');
-          }
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.removeItem('alankaran-theme');
         } catch (e) {}
       })();
     </script>
@@ -75,19 +71,14 @@
     <style>
       /* Critical: prevent FOUC (Flash Of Unstyled Content) */
       html { background: #F8F5F0; color: #2A2421; }
-      html[data-theme="luxury"] { background: #080808; color: #F8F5EF; }
       body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: #F8F5F0; }
-      html[data-theme="luxury"] body { background: #080808; }
       /* Above-fold hero skeleton — visible before React hydrates */
       #root { min-height: 100svh; }
       /* font-display:swap fallback stacks — text always visible */
       .font-serif  { font-family: 'Cormorant Garamond', Georgia, serif; }
-      html[data-theme="luxury"] .font-serif { font-family: 'Playfair Display', Georgia, serif; }
       .font-script { font-family: 'Great Vibes', cursive; }
-      html[data-theme="luxury"] .font-script { font-family: 'Pinyon Script', cursive; }
       /* Gold accent so hero tagline renders instantly */
       .text-gold   { color: #B08D57; }
-      html[data-theme="luxury"] .text-gold { color: #D4AF37; }
     </style>
   </head>
   <body>

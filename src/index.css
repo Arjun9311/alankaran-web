@@ -175,46 +175,7 @@
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
-[data-theme="luxury"] {
-  --background: 0 0% 3%;
-  --foreground: 40 33% 95%;
-  --border: 46 65% 20%;
 
-  --card: 0 0% 5%;
-  --card-foreground: 40 33% 95%;
-  --card-border: 46 65% 20%;
-
-  --sidebar: 0 0% 4%;
-  --sidebar-foreground: 40 33% 95%;
-  --sidebar-border: 46 65% 20%;
-  --sidebar-primary: 46 65% 52%;
-  --sidebar-primary-foreground: 40 33% 95%;
-  --sidebar-accent: 45 68% 84%;
-  --sidebar-accent-foreground: 40 33% 95%;
-  --sidebar-ring: 46 65% 52%;
-
-  --popover: 0 0% 5%;
-  --popover-foreground: 40 33% 95%;
-  --popover-border: 46 65% 20%;
-
-  --primary: 46 65% 52%;
-  --primary-foreground: 40 33% 95%;
-
-  --secondary: 349 48% 11%;
-  --secondary-foreground: 40 33% 95%;
-
-  --muted: 0 0% 8%;
-  --muted-foreground: 40 14% 67%;
-
-  --accent: 45 68% 84%;
-  --accent-foreground: 0 0% 3%;
-
-  --input: 46 65% 20%;
-  --ring: 46 65% 52%;
-
-  --app-font-serif: 'Playfair Display', serif;
-  --app-font-script: 'Pinyon Script', cursive;
-}
 
 @layer base {
   * {
@@ -290,11 +251,7 @@
   color: transparent;
 }
 
-[data-theme="luxury"] .text-gold-gradient {
-  background-image: linear-gradient(to right, hsl(45 68% 84%), hsl(46 65% 52%));
-  -webkit-background-clip: text;
-  background-clip: text;
-}
+
 
 .border-gold {
   border-color: hsl(var(--primary) / 0.35);
@@ -324,19 +281,14 @@
   background-color: hsl(20 12% 15%);
 }
 
-[data-theme="luxury"] .bg-nizami-dark {
-  background-color: hsl(0 0% 3%) !important;
-}
+
 
 .bg-luxury-gradient {
   background: radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 60%),
     linear-gradient(to bottom, hsl(var(--background)), hsl(var(--muted)));
 }
 
-[data-theme="luxury"] .bg-luxury-gradient {
-  background: radial-gradient(circle at 50% 0%, hsl(349 48% 11% / 0.25) 0%, transparent 60%),
-    linear-gradient(to bottom, hsl(0 0% 3%), hsl(0 0% 5%));
-}
+
 
 .gold-glow {
   box-shadow: 0 0 20px hsl(var(--primary) / 0.25);
@@ -362,22 +314,11 @@
 }
 
 /* Luxury theme background and border overrides for legacy/utility classes */
-[data-theme="luxury"] .bg-white,
-[data-theme="luxury"] .bg-white\/95,
-[data-theme="luxury"] .bg-white\/90,
-[data-theme="luxury"] .bg-white\/80 {
-  background-color: hsl(var(--card)) !important;
-}
 
-[data-theme="luxury"] .bg-stone-50,
-[data-theme="luxury"] .bg-stone-100,
-[data-theme="luxury"] .bg-stone-200 {
-  background-color: hsl(0 0% 5%) !important; /* Soft dark container */
-}
 
-[data-theme="luxury"] .hover\:bg-stone-50:hover {
-  background-color: hsl(0 0% 8%) !important;
-}
+
+
+
 
 /*
   GPU promotion for heavy animated elements.
@@ -404,13 +345,7 @@
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
 }
 
-[data-theme="luxury"] .glass-card {
-  background: rgba(12, 12, 12, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.15);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-}
+
 
 .section-label {
   font-family: var(--app-font-sans);
